@@ -1,6 +1,6 @@
 # AI Design Compass
 
-[AIシステム設計の日本語ガイド](../README.ja.md)を題材にした適応型の学習診断です。Cloudflare Workers + D1で動作し、メールの確認コードでログインします。
+[AIシステム設計の日本語ガイド](../AI_SYSTEM_DESIGN_DOC.md)を題材にした適応型の学習診断です。Cloudflare Workers + D1で動作し、メールの確認コードでログインします。
 
 - 本番: https://ai-design-compass.kazumasa.workers.dev
 - アプリ内の日本語ガイド: https://ai-design-compass.kazumasa.workers.dev/guide.html
@@ -17,7 +17,7 @@ flowchart TB
   Browser[ブラウザー] -->|ログイン・出題・回答・結果取得| Quiz[クイズ Worker]
   Quiz -->|メール確認コード| Resend[Resend]
   Quiz <--> QuizDB[(クイズ専用 D1)]
-  Quiz -->|日本語ガイドを配信| Guide[README.ja.md から生成した HTML]
+  Quiz -->|日本語ガイドを配信| Guide[AI_SYSTEM_DESIGN_DOC.md から生成した HTML]
   Sync[Cloudflare Cron / 5分ごと] -->|送信と結果同期| Quiz
   Quiz -->|Service Binding + アプリ用キー| Jobs[共通ジョブ API / 別 Worker]
   Jobs <--> JobsDB[(共通ジョブ専用 D1)]
@@ -83,7 +83,7 @@ PCとHermesのスケジューラーが稼働し、モデルの認証・利用枠
 
 | 場所 | 役割 |
 |---|---|
-| `../README.ja.md` | 日本語の学習ガイドの原本。英語の原典READMEはリポジトリから削除 |
+| `../AI_SYSTEM_DESIGN_DOC.md` | 日本語の学習ガイドの原本。英語の原典READMEはリポジトリから削除 |
 | `scripts/build-guide.mjs` | 日本語ガイドを配信用HTMLとMarkdownへ変換 |
 | `public/` | UIと日本語ガイド。Workerが配信する静的ファイル |
 | `src/questions.js` / `src/choice-feedback.js` | 問題・正解・採点基準と選択式の誤答解説 |
@@ -93,7 +93,7 @@ PCとHermesのスケジューラーが稼働し、モデルの認証・利用枠
 | `src/worker.js` | クイズAPI、静的配信、同期Cron、日次整理 |
 | `migrations/` | クイズ専用D1のスキーマ。0004まで適用が必要 |
 
-日本語ガイドへのリンクは `/guide.html#…` を使います。過去の回答に保存された英語の節IDも日本語ガイド内に残し、復習先を維持しています。ガイド本文を更新したら `npm run build:guide` で再生成します。`npm run dev` と `npm run deploy` でも自動生成します。生成済みの `public/guide.html` と `public/README.ja.md` を直接編集しないでください。
+日本語ガイドへのリンクは `/guide.html#…` を使います。過去の回答に保存された英語の節IDも日本語ガイド内に残し、復習先を維持しています。ガイド本文を更新したら `npm run build:guide` で再生成します。`npm run dev` と `npm run deploy` でも自動生成します。生成済みの `public/guide.html` と `public/AI_SYSTEM_DESIGN_DOC.md` を直接編集しないでください。
 
 旧共通ジョブの `llm_jobs` / `llm_apps` テーブルは保管用で、現在のクイズ実行コードは使いません。クイズURLの旧 `/api/jobs` も廃止しています。共通サービスのコード・専用DB・リポジトリは独立しています。
 

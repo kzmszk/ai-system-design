@@ -10,12 +10,16 @@
     "db:local": "wrangler d1 migrations apply DB --local --config wrangler.local.jsonc",
     "db:remote": "wrangler d1 migrations apply DB --remote",
     "deploy": "wrangler deploy",
-    "grade": "node --env-file-if-exists=.grader.env scripts/grade.mjs"
+    "grade": "node --env-file-if-exists=.grader.env scripts/grade.mjs",
+    "build:guide": "node scripts/build-guide.mjs",
+    "predev": "npm run build:guide",
+    "predeploy": "npm run build:guide"
   },
   "engines": {
     "node": ">=22.16"
   },
   "devDependencies": {
+    "marked": "18.0.14",
     "wrangler": "^4.141.0"
   }
 }

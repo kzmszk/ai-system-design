@@ -3,7 +3,7 @@ const el = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
 const labels = { unseen:'未確認', pending:'採点待ち', candidate:'復習候補', review:'復習を優先', evidence:'理解の手がかりあり', uncertain:'追加確認' };
 const levels = { 1:'基礎', 2:'応用', 3:'設計' };
-const source = anchor => 'https://github.com/amitshekhariitbhu/ai-system-design/blob/main/README.md#' + (anchor || '');
+const source = anchor => '/guide.html#' + (anchor || '');
 let me = null, attempt = null, history = [], nextCursor = null, busy = false, error = '', email = '', challenge = null, resendAt = 0, view = 'loading', draft = '', choice = null, requestKey = crypto.randomUUID(), poll = null, epoch = 0;
 const categories = [ ['inference','推論・ハードウェア'], ['scaling','スケーリング・配信'], ['caching','キャッシュ'], ['rag','検索・RAG'], ['agents','エージェント'], ['systems','システム連携・音声'], ['security','セキュリティ'], ['ops','評価・運用・費用'] ];
 let quizLevel = '', quizDomains = new Set(categories.map(([id])=>id));
@@ -93,7 +93,7 @@ function renderWaiting(){frame('<article class="question-card waiting-card"><p c
 function domainCard(d){
  const notes={unseen:'まだ回答していないため、判定していません。',pending:'採点前の回答しかないため、理解度は判定していません。',candidate:'低得点の回答がありました。1問だけでは分野全体を断定できません。',review:'複数の回答で不足が見られました。復習を優先する候補です。',evidence:'今回の範囲で良好な手がかりが得られました。未出題のテーマは未確認です。',uncertain:'確認数が少ないか、結果が混在しています。追加確認が必要です。'};
  const rows=attempt.answers.filter(a=>a.question.domain===d.id);
- return '<article class="result-row"><div class="result-row-head"><h3>'+d.name+'</h3><span class="status '+(['candidate','review'].includes(d.status)?'weak':d.status==='evidence'?'strong':'')+'">'+labels[d.status]+'</span></div><p class="result-meta">'+d.count+'問回答 · '+d.scoredCount+'問採点済み'+(d.pending?' · '+d.pending+'問採点待ち':'')+(d.needsReview?' · '+d.needsReview+'問は採点要確認':'')+'</p><p>'+notes[d.status]+'</p><p class="result-meta">'+esc(d.topics)+'</p><p>'+rows.map(a=>'Lv.'+a.question.level+' '+esc(a.question.topic)+'：'+outcome(a)).join('<br>')+'</p><a class="source-link" target="_blank" rel="noopener noreferrer" href="'+source(d.anchor)+'">この分野をREADMEで復習 ↗</a></article>';
+ return '<article class="result-row"><div class="result-row-head"><h3>'+d.name+'</h3><span class="status '+(['candidate','review'].includes(d.status)?'weak':d.status==='evidence'?'strong':'')+'">'+labels[d.status]+'</span></div><p class="result-meta">'+d.count+'問回答 · '+d.scoredCount+'問採点済み'+(d.pending?' · '+d.pending+'問採点待ち':'')+(d.needsReview?' · '+d.needsReview+'問は採点要確認':'')+'</p><p>'+notes[d.status]+'</p><p class="result-meta">'+esc(d.topics)+'</p><p>'+rows.map(a=>'Lv.'+a.question.level+' '+esc(a.question.topic)+'：'+outcome(a)).join('<br>')+'</p><a class="source-link" target="_blank" rel="noopener noreferrer" href="'+source(d.anchor)+'">この分野を日本語ガイドで復習 ↗</a></article>';
 }
 function outcome(a){if(a.skipped)return 'わからない';if(a.status==='pending')return '採点待ち';if(a.status==='needs_review')return '採点要確認';if(a.question.type==='choice')return a.score===1?'正解':'見直し';return Math.round(a.score*6)+'/6点（LLM採点）'}
 function answerHistory() {
@@ -110,7 +110,7 @@ function answerHistory() {
    else review+='<p class="muted">'+(a.status==='pending'?'採点後に、観点別の点数と満点に必要な改善点を表示します。':a.status==='needs_review'?'採点を要確認としています。この回答はレベル推定に使いません。':'未回答のため0点です。解答例と満点のポイントを参考にしてください。')+'</p>';
    if(a.status==='needs_review') review+='<p class="dev-note">この採点は要確認のため、レベル推定には使っていません。</p>';
   }
-  return '<details open><summary><span class="muted">'+String(a.ordinal+1).padStart(2,'0')+' · Lv.'+q.level+'</span> '+esc(q.topic)+' <span class="status">'+outcome(a)+'</span></summary><h4>問題</h4><p>'+esc(q.prompt)+'</p><div class="answer-yours"><h4>あなたの回答</h4><p>'+esc(yourAnswer)+'</p></div>'+review+'<a class="source-link" target="_blank" rel="noopener noreferrer" href="'+source(q.anchor)+'">READMEの該当箇所 ↗</a></details>';
+  return '<details open><summary><span class="muted">'+String(a.ordinal+1).padStart(2,'0')+' · Lv.'+q.level+'</span> '+esc(q.topic)+' <span class="status">'+outcome(a)+'</span></summary><h4>問題</h4><p>'+esc(q.prompt)+'</p><div class="answer-yours"><h4>あなたの回答</h4><p>'+esc(yourAnswer)+'</p></div>'+review+'<a class="source-link" target="_blank" rel="noopener noreferrer" href="'+source(q.anchor)+'">日本語ガイドの該当箇所 ↗</a></details>';
  }).join('')+'</section>';
 }
 function renderResults(){

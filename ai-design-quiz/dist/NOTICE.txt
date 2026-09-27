@@ -1,0 +1,7 @@
+AI Design Compass
+Question material adapted in Japanese from AI System Design
+Copyright (C) 2026 Outcome School
+Author: Amit Shekhar
+Source: https://github.com/amitshekhariitbhu/ai-system-design
+Original material licensed under the Apache License, Version 2.0.
+Changes: Japanese assessment questions, explanations, rubrics, and adaptive learning interface.

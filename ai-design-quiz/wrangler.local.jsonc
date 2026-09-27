@@ -1,0 +1,18 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-design-compass-local",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-26",
+  "workers_dev": false,
+  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": true},
+  "d1_databases": [
+    {"binding": "DB", "database_name": "ai-design-compass-local", "database_id": "local-compass", "migrations_dir": "migrations"}
+  ],
+  "vars": {
+    "APP_ENV": "development",
+    "MAIL_DELIVERY_MODE": "development",
+    "OTP_SECRET": "local-development-only-do-not-deploy-otp-secret",
+    "GRADING_API_KEY": "local-development-only-grading-api-key"
+  },
+  "dev": {"port": 8787, "ip": "127.0.0.1"}
+}

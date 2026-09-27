@@ -1,0 +1,21 @@
+{
+  "name": "ai-design-compass",
+  "private": true,
+  "version": "2.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --config wrangler.local.jsonc",
+    "test": "node --test tests/*.test.mjs",
+    "check": "node --check src/worker.js && node --check public/app.js && node --check scripts/grade.mjs",
+    "db:local": "wrangler d1 migrations apply DB --local --config wrangler.local.jsonc",
+    "db:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "wrangler deploy",
+    "grade": "node --env-file-if-exists=.grader.env scripts/grade.mjs"
+  },
+  "engines": {
+    "node": ">=22.16"
+  },
+  "devDependencies": {
+    "wrangler": "^4.141.0"
+  }
+}

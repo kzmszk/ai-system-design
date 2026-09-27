@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "ai-design-compass",
+  "account_id": "33b65ca225d06f52f72ac3c4b997ec4a",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-09-26",
+  "workers_dev": true,
+  "assets": {"directory": "./public", "binding": "ASSETS", "run_worker_first": true},
+  "d1_databases": [
+    {"binding": "DB", "database_name": "ai-design-compass", "database_id": "97efffc2-db23-4863-9129-fe5ba2a8a119", "migrations_dir": "migrations"}
+  ],
+  "vars": {"APP_ENV": "production", "MAIL_DELIVERY_MODE": "resend", "MAIL_FROM": "AI Design Compass <login@fuchikoma.com>", "OPENAI_MODEL": "gpt-5.4-mini"},
+  "services": [{"binding":"LLM_JOBS","service":"hermes-llm-jobs"}],
+  "triggers": {"crons": ["17 3 * * *", "*/5 * * * *"]}
+}

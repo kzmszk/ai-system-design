@@ -1,0 +1,8 @@
+# 本番は wrangler secret put で設定。実際のキーをコミットしないこと。
+OTP_SECRET=replace-with-32-or-more-random-characters
+GRADING_API_KEY=replace-with-a-different-random-secret
+OPENAI_API_KEY=replace_me
+OPENAI_MODEL=gpt-5.4-mini
+# Resendを使う場合のみ。Cloudflare Email Serviceにも対応。
+RESEND_API_KEY=re_replace_me
+MAIL_FROM=login@your-verified-domain.example

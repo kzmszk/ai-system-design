@@ -9,7 +9,8 @@ export function enqueueQuiz(env, answerId, question, answer, time) {
 async function api(env,path,data) {
   if(!env.LLM_JOBS_API_KEY||!env.LLM_JOBS)throw new Error('jobs_not_configured');
   const r=await env.LLM_JOBS.fetch('https://hermes-llm-jobs.kazumasa.workers.dev'+path,{
-    method:data===undefined?'GET':'POST',redirect:'error',signal:AbortSignal.timeout(10000),
+    // Workers supports manual/follow only. Reject redirects via the !r.ok check below.
+    method:data===undefined?'GET':'POST',redirect:'manual',signal:AbortSignal.timeout(10000),
     headers:{Authorization:'Bearer '+env.LLM_JOBS_API_KEY,'Content-Type':'application/json'},
     ...(data===undefined?{}:{body:JSON.stringify(data)})
   });
